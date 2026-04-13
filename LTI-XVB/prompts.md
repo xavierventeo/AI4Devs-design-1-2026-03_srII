@@ -104,7 +104,7 @@ Generar el modelo de dato de las principales entidades para el sistema ATS LTI
 ## Resultado
 Genera el resultado al final del documento LTI-XVB.md 
 
-# Prompt 4: Diseño del sistema a alto nivel, tanto explicado como diagrama adjunto
+# Prompt 5: Diseño del sistema a alto nivel, tanto explicado como diagrama adjunto
 
 ## Rol
 Actúa como un Arquitecto de sofware experto con amplia experienca que colaboras para diseñar la primera versión de un **ATS (Applicant Tracking System)** llamado **LTI** para una startup. 

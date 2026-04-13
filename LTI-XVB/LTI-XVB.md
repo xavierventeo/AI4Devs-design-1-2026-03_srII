@@ -413,3 +413,174 @@ flowchart TB
 ```
 
 Este diseño balancea una primera ejecución rápida con la capacidad de crecer de forma ordenada. La arquitectura hexagonal asegura que el dominio de LTI permanezca limpio y adaptable, permitiendo a la startup iterar sobre funcionalidades sin comprometer la flexibilidad técnica.
+
+## Diagramas C4 del Sistema ATS LTI
+
+A continuación, se presentan los diagramas C4 para el sistema LTI, siguiendo los niveles estándar: Context, Containers y Components. Para el nivel Code, se profundiza en el componente `ReceiveApplication Service`, mostrando su estructura interna de clases y métodos.
+
+### Nivel Context: Vista General del Sistema
+
+Este diagrama muestra el contexto del sistema LTI, incluyendo usuarios y sistemas externos con los que interactúa.
+
+```mermaid
+C4Context
+    title Diagrama C4 - Nivel Context: ATS LTI
+
+    Person(candidate, "Candidato", "Persona que aplica a ofertas de empleo")
+    Person(recruiter, "Reclutador", "Usuario interno que gestiona ofertas y postulaciones")
+
+    System(lti, "ATS LTI", "Sistema de seguimiento de candidatos para startups")
+
+    System_Ext(linkedin, "LinkedIn", "Plataforma de publicación de ofertas")
+    System_Ext(indeed, "Indeed", "Portal de empleo")
+    System_Ext(email, "Servicio de Email", "Envío de notificaciones")
+    System_Ext(ai_parser, "Servicio de IA Parsing", "Análisis de currículos")
+
+    Rel(candidate, lti, "Envía solicitud de empleo")
+    Rel(recruiter, lti, "Crea ofertas, publica y revisa postulaciones")
+    Rel(lti, linkedin, "Publica ofertas")
+    Rel(lti, indeed, "Publica ofertas")
+    Rel(lti, email, "Envía notificaciones")
+    Rel(lti, ai_parser, "Parsea currículos")
+```
+
+### Nivel Containers: Contenedores del Sistema
+
+Este diagrama detalla los contenedores principales que componen el sistema LTI, incluyendo la aplicación web, la base de datos y los servicios externos.
+
+```mermaid
+C4Container
+    title Diagrama C4 - Nivel Containers: ATS LTI
+
+    Person(candidate, "Candidato", "Persona que aplica a ofertas")
+    Person(recruiter, "Reclutador", "Usuario interno")
+
+    Container(web_app, "Aplicación Web", "React/Node.js", "Interfaz de usuario para reclutadores y candidatos")
+    Container(api, "API REST", "Node.js/Express", "Servicios de aplicación y dominio")
+    ContainerDb(db, "Base de Datos", "PostgreSQL", "Almacenamiento de entidades y relaciones")
+    Container(queue, "Cola de Mensajes", "RabbitMQ", "Procesamiento asíncrono de notificaciones")
+    Container_Ext(ai_service, "Servicio de IA", "API Externa", "Parsing de currículos")
+    Container_Ext(job_boards, "Portales de Empleo", "APIs Externas", "Publicación de ofertas")
+
+    Rel(candidate, web_app, "Accede al formulario de aplicación")
+    Rel(recruiter, web_app, "Gestiona ofertas y postulaciones")
+    Rel(web_app, api, "Llama a servicios")
+    Rel(api, db, "Lee/escribe datos")
+    Rel(api, queue, "Envía mensajes")
+    Rel(queue, api, "Procesa respuestas")
+    Rel(api, ai_service, "Envía currículos para parsing")
+    Rel(api, job_boards, "Publica ofertas")
+```
+
+### Nivel Components: Componentes dentro del Contenedor API
+
+Este diagrama muestra los componentes principales dentro del contenedor API, enfocándose en los servicios de aplicación y adaptadores.
+
+```mermaid
+C4Component
+    title Diagrama C4 - Nivel Components: Contenedor API de LTI
+
+    Container_Boundary(api, "API REST") {
+        Component(create_service, "CreateJobPost Service", "Servicio de Aplicación", "Orquesta la creación de ofertas")
+        Component(publish_service, "PublishJobPost Service", "Servicio de Aplicación", "Gestiona publicación en canales")
+        Component(receive_service, "ReceiveApplication Service", "Servicio de Aplicación", "Procesa postulaciones entrantes")
+        Component(domain, "Domain Model", "Entidades y Reglas", "Lógica de negocio central")
+        Component(db_adapter, "Database Adapter", "Adaptador de Salida", "Interfaz con base de datos")
+        Component(notif_adapter, "Notification Adapter", "Adaptador de Salida", "Envío de notificaciones")
+        Component(pub_adapter, "Publication Adapter", "Adaptador de Salida", "Integración con portales")
+        Component(parsing_adapter, "Parsing Adapter", "Adaptador de Salida", "Integración con IA")
+    }
+
+    ContainerDb(db, "Base de Datos", "PostgreSQL")
+    Container_Ext(ai, "Servicio IA")
+    Container_Ext(job_boards, "Portales")
+
+    Rel(create_service, domain, "Usa reglas de negocio")
+    Rel(publish_service, domain, "Usa reglas de negocio")
+    Rel(receive_service, domain, "Usa reglas de negocio")
+    Rel(create_service, db_adapter, "Persiste ofertas")
+    Rel(publish_service, pub_adapter, "Publica ofertas")
+    Rel(receive_service, parsing_adapter, "Parsea currículos")
+    Rel(receive_service, notif_adapter, "Envía notificaciones")
+    Rel(db_adapter, db, "CRUD operaciones")
+    Rel(pub_adapter, job_boards, "API calls")
+    Rel(parsing_adapter, ai, "Envía datos")
+    Rel(notif_adapter, db, "Registra logs")
+```
+
+### Nivel Code: Detalle del Componente ReceiveApplication Service
+
+Para el nivel Code, se profundiza en el componente `ReceiveApplication Service`, mostrando sus clases principales, métodos y relaciones.
+
+```mermaid
+classDiagram
+    class ReceiveApplicationService {
+        +receiveApplication(dto: ApplicationDTO): Application
+        +validateData(dto: ApplicationDTO): boolean
+        +parseResume(resume: File): ParsedData
+        +createCandidate(data: ParsedData): Candidate
+        +createApplication(candidate: Candidate, jobPost: JobPost): Application
+        +notifyRecruiter(application: Application): void
+    }
+
+    class ApplicationDTO {
+        +candidateEmail: string
+        +jobPostId: string
+        +resume: File
+        +coverLetter: string
+    }
+
+    class ParsedData {
+        +name: string
+        +experience: string[]
+        +skills: string[]
+        +education: string
+    }
+
+    class Candidate {
+        +candidateId: string
+        +firstName: string
+        +lastName: string
+        +email: string
+        +resumeUrl: string
+        +profileStatus: string
+    }
+
+    class Application {
+        +applicationId: string
+        +candidateId: string
+        +jobPostId: string
+        +status: string
+        +appliedAt: DateTime
+    }
+
+    class JobPost {
+        +jobPostId: string
+        +title: string
+        +status: string
+    }
+
+    class ResumeParsingGateway {
+        +parse(resume: File): ParsedData
+    }
+
+    class NotificationGateway {
+        +sendNotification(recipient: string, message: string): void
+    }
+
+    class ApplicationRepository {
+        +save(application: Application): void
+        +findById(id: string): Application
+    }
+
+    ReceiveApplicationService --> ApplicationDTO : usa
+    ReceiveApplicationService --> ParsedData : genera
+    ReceiveApplicationService --> Candidate : crea
+    ReceiveApplicationService --> Application : crea
+    ReceiveApplicationService --> JobPost : referencia
+    ReceiveApplicationService --> ResumeParsingGateway : llama
+    ReceiveApplicationService --> NotificationGateway : llama
+    ReceiveApplicationService --> ApplicationRepository : persiste
+```
+
+Estos diagramas C4 proporcionan una visión progresiva del sistema LTI, desde el contexto global hasta el detalle de implementación de un componente clave. Facilitan la comunicación entre stakeholders y guían el desarrollo técnico.
