@@ -78,3 +78,127 @@ block-beta
 ```
 
 Este Lean Canvas se justifica por su alineación con el marco de Lean Startup, permitiendo iteraciones rápidas basadas en métricas reales. Los segmentos de clientes se enfocan en startups para maximizar el retorno de inversión inicial, mientras que los flujos de ingresos priorizan modelos SaaS recurrentes para sostenibilidad financiera.
+
+## Casos de Uso Principales
+
+A continuación, se documentan los tres casos de uso principales de LTI, correspondientes a las primeras etapas del proceso de reclutamiento. Cada caso de uso se describe en formato estructurado, incluyendo actores, precondiciones, flujo principal, postcondiciones y justificaciones. Se incluye un diagrama Mermaid para ilustrar el flujo de cada caso de uso, facilitando la comprensión visual y la validación del diseño.
+
+### Caso de Uso 1: Creación de Ofertas de Empleo
+
+**Descripción**: Este caso de uso permite a un reclutador crear una nueva oferta de empleo en el sistema LTI, utilizando plantillas predefinidas y campos estructurados para asegurar consistencia y eficiencia.
+
+**Actores**:
+- Reclutador (usuario principal)
+
+**Precondiciones**:
+- El reclutador debe estar autenticado en el sistema LTI.
+- El sistema debe tener acceso a plantillas de ofertas de empleo.
+
+**Flujo Principal**:
+1. El reclutador accede al módulo de creación de ofertas.
+2. Selecciona una plantilla de oferta o inicia una nueva.
+3. Ingresa los detalles: título, descripción, requisitos, salario, ubicación.
+4. El sistema valida los datos ingresados.
+5. El reclutador guarda la oferta.
+6. El sistema confirma la creación y asigna un ID único a la oferta.
+
+**Postcondiciones**:
+- La oferta de empleo se almacena en la base de datos y está disponible para publicación.
+- Se registra un log de auditoría para trazabilidad.
+
+**Justificación**: Esta funcionalidad se justifica por la necesidad de estandarizar la creación de ofertas, reduciendo errores manuales y acelerando el proceso. La inclusión de plantillas facilita la adopción por usuarios no expertos, alineándose con el enfoque en eficiencia para startups.
+
+**Diagrama**:
+
+```mermaid
+sequenceDiagram
+    participant R as Reclutador
+    participant S as Sistema LTI
+    R->>S: Accede al módulo de creación
+    S-->>R: Muestra plantillas disponibles
+    R->>S: Selecciona plantilla e ingresa detalles
+    S->>S: Valida datos
+    R->>S: Guarda oferta
+    S-->>R: Confirma creación y asigna ID
+```
+
+### Caso de Uso 2: Publicación en Portales de Empleo, Sitios Web y Redes Sociales
+
+**Descripción**: Este caso de uso permite al reclutador publicar una oferta de empleo creada en múltiples canales externos, automatizando la distribución para maximizar el alcance.
+
+**Actores**:
+- Reclutador (usuario principal)
+
+**Precondiciones**:
+- La oferta de empleo debe estar creada y aprobada en el sistema.
+- El sistema debe tener configuradas integraciones con APIs de portales (e.g., LinkedIn, Indeed).
+
+**Flujo Principal**:
+1. El reclutador selecciona una oferta existente.
+2. Elige los canales de publicación (portales, sitio web, redes sociales).
+3. Configura opciones adicionales (fechas, mensajes personalizados).
+4. El sistema valida las credenciales de los canales.
+5. El reclutador confirma la publicación.
+6. El sistema publica automáticamente en los canales seleccionados y registra el estado.
+
+**Postcondiciones**:
+- La oferta se publica en los canales especificados.
+- Se actualiza el estado de la oferta en el sistema (publicada).
+- Se envía una notificación al reclutador con enlaces a las publicaciones.
+
+**Justificación**: La automatización de la publicación reduce el tiempo y esfuerzo manual, permitiendo a las startups competir con empresas más grandes en alcance. La integración con múltiples canales se justifica por la diversidad de fuentes de candidatos en el mercado actual, optimizando la eficiencia del reclutamiento.
+
+**Diagrama**:
+
+```mermaid
+sequenceDiagram
+    participant R as Reclutador
+    participant S as Sistema LTI
+    participant C as Canales Externos
+    R->>S: Selecciona oferta y canales
+    S-->>R: Muestra opciones de configuración
+    R->>S: Confirma publicación
+    S->>C: Publica oferta vía APIs
+    C-->>S: Confirma publicación
+    S-->>R: Notifica éxito y enlaces
+```
+
+### Caso de Uso 3: Recepción de Solicitudes de Empleo
+
+**Descripción**: Este caso de uso permite al sistema recibir y procesar solicitudes de empleo enviadas por candidatos a través de formularios en línea o correos electrónicos, centralizándolas en el repositorio de LTI.
+
+**Actores**:
+- Candidato (usuario externo)
+- Sistema LTI (procesa automáticamente)
+
+**Precondiciones**:
+- La oferta de empleo debe estar publicada y activa.
+- El sistema debe tener formularios de aplicación configurados.
+
+**Flujo Principal**:
+1. El candidato accede al formulario de aplicación (desde un portal o sitio web).
+2. Ingresa sus datos personales, currículo y carta de presentación.
+3. Envía la solicitud.
+4. El sistema recibe la solicitud y realiza parsing automático del currículo.
+5. Extrae datos clave (experiencia, habilidades) y los almacena.
+6. Asigna la solicitud a la oferta correspondiente y notifica al reclutador.
+
+**Postcondiciones**:
+- La solicitud se almacena en la base de datos asociada a la oferta.
+- El reclutador recibe una notificación en tiempo real.
+- Se genera un perfil de candidato para revisión posterior.
+
+**Justificación**: Centralizar las solicitudes elimina la gestión manual de correos y formularios, mejorando la organización y permitiendo búsquedas eficientes. El parsing automático con IA se justifica por la necesidad de procesar grandes volúmenes de aplicaciones en startups, reduciendo el tiempo de respuesta y mejorando la calidad de los datos.
+
+**Diagrama**:
+
+```mermaid
+sequenceDiagram
+    participant Ca as Candidato
+    participant S as Sistema LTI
+    participant R as Reclutador
+    Ca->>S: Envía solicitud vía formulario
+    S->>S: Procesa y parsea currículo
+    S->>S: Almacena datos y asocia a oferta
+    S-->>R: Notifica recepción en tiempo real
+```

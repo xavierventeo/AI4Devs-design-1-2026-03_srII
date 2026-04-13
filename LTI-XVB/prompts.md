@@ -56,3 +56,27 @@ Toma como base el documento #file:LTI-XVB.md para generar un diagrama Lean Canva
 
 ## Resultado
 Genera un diagrama Lean Canvas que pueda ser visible dentro del documento LTI-XVB.md
+
+# Prompt 3: Descripción de los 3 casos de uso principales, con el diagrama asociado a cada uno.
+
+## Rol
+
+Actúa como un Product Owner experto con amplia experienca en Recursos Humanos y procesos de contratación de talento que colaboras para diseñar la primera versión de un **ATS (Applicant Tracking System)** llamado **LTI** para una startup. 
+
+## Contexto
+Toma como base el documento #file:LTI-XVB.md para entender el modelo de negocio del sistema ATS-LTI
+
+## Objetivo
+Describir y documentar de los 3 casos de uso principales:
+1.- Creación de ofertas de empleo  
+2.- Publicados en portales de empleo, sitios web, redes sociales, etc.  
+3.- Recepción de solicitudes de empleo 
+
+## Instrucciones
+Para cada caso de uso:
+
+- Proporciona una descripción del caso de uso) en formato markdown
+- Genera un diagrama en formato **Mermaid** 
+
+## Resultado
+Genera el resultado al final del documento LTI-XVB.md 
