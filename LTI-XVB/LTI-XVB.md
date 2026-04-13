@@ -202,3 +202,98 @@ sequenceDiagram
     S->>S: Almacena datos y asocia a oferta
     S-->>R: Notifica recepción en tiempo real
 ```
+
+## Modelo de Datos del Sistema LTI
+
+A continuación se describe el modelo de datos de las entidades principales del ATS LTI, con sus atributos esenciales y las relaciones más relevantes. Este modelo facilita la implementación técnica del sistema y asegura consistencia entre los casos de uso y el comportamiento esperado.
+
+```mermaid
+erDiagram
+    CANDIDATE {
+        string candidate_id PK
+        string first_name
+        string last_name
+        string email
+        string phone
+        string location
+        string resume_url
+        string profile_status
+        datetime created_at
+        datetime updated_at
+    }
+    JOB_POST {
+        string job_post_id PK
+        string title
+        string description
+        string requirements
+        string location
+        string salary_range
+        string status
+        string created_by
+        datetime created_at
+        datetime updated_at
+    }
+    APPLICATION {
+        string application_id PK
+        string candidate_id FK
+        string job_post_id FK
+        string status
+        string source
+        string resume_parsed_data
+        string cover_letter
+        datetime applied_at
+        datetime updated_at
+    }
+    RECRUITER {
+        string recruiter_id PK
+        string name
+        string email
+        string role
+        string team
+        datetime created_at
+        datetime updated_at
+    }
+    PUBLICATION_CHANNEL {
+        string channel_id PK
+        string name
+        string type
+        string api_endpoint
+        string status
+        datetime created_at
+        datetime updated_at
+    }
+    JOB_PUBLICATION {
+        string publication_id PK
+        string job_post_id FK
+        string channel_id FK
+        string external_id
+        string status
+        datetime published_at
+        datetime updated_at
+    }
+    CANDIDATE ||--o{ APPLICATION : applies_to
+    JOB_POST ||--o{ APPLICATION : receives
+    RECRUITER ||--o{ JOB_POST : creates
+    JOB_POST ||--o{ JOB_PUBLICATION : publishes
+    PUBLICATION_CHANNEL ||--o{ JOB_PUBLICATION : includes
+```
+
+### Entidades principales
+
+- **CANDIDATE**: Representa al candidato que aplica a ofertas. Incluye información personal, un enlace al currículo y el estado del perfil. Esta entidad es clave para la centralización de solicitudes y la evaluación posterior.
+- **JOB_POST**: Define la oferta de empleo creada por el reclutador. Contiene los campos necesarios para publicación y seguimiento, tales como título, descripción, requisitos, ubicación y estado.
+- **APPLICATION**: Registra cada postulación de un candidato a una oferta. Incluye referencias (FK) a `CANDIDATE` y `JOB_POST`, el estado actual de la aplicación y los datos extraídos tras el procesamiento del currículo.
+- **RECRUITER**: Modela al usuario interno responsable de crear ofertas y gestionar postulaciones. Incluye datos de contacto y el equipo al que pertenece.
+- **PUBLICATION_CHANNEL**: Representa los canales externos donde se publica una oferta (LinkedIn, Indeed, sitio web, redes sociales). Incluye información técnica para integraciones API.
+- **JOB_PUBLICATION**: Materializa la publicación de una oferta en un canal externo. Guarda el estado de la publicación y el identificador externo proporcionado por el canal.
+
+### Otras entidades importantes
+
+- **INTERVIEW**: Para una versión posterior, almacena agendas de entrevistas, participantes, resultados y estados de programación.
+- **ASSESSMENT**: Registra pruebas en línea, cuestionarios y resultados de evaluación técnica vinculados a postulantes.
+- **OFFER**: Modela ofertas de contrato generadas para candidatos finalistas, incluyendo condiciones propuestas, fecha de vencimiento y estado de aceptación.
+- **ACTIVITY_LOG**: Registra acciones del sistema y del usuario para auditoría y trazabilidad, como creación de ofertas, publicaciones, actualizaciones de estado y notificaciones.
+- **NOTIFICATION**: Gestiona los mensajes y alertas enviados a reclutadores, candidatos y otros actores, garantizando trazabilidad y reenvío si es necesario.
+- **USER**: Si se requiere un modelo de autenticación más general, agrupa reclutadores, hiring managers y otros perfiles con permisos y credenciales.
+
+Este modelo de datos se enfoca en la primera versión de LTI, permitiendo una implementación inicial robusta y extendible. Las entidades adicionales propuestas son críticas para evolucionar el ATS hacia funcionalidades de entrevistas, evaluaciones y ofertas formales.
