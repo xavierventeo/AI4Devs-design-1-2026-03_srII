@@ -298,7 +298,7 @@ erDiagram
 
 Este modelo de datos se enfoca en la primera versión de LTI, permitiendo una implementación inicial robusta y extendible. Las entidades adicionales propuestas son críticas para evolucionar el ATS hacia funcionalidades de entrevistas, evaluaciones y ofertas formales.
 
-## Diseño de Arquitectura a Alto Nivel para LTI-XVB
+## Diseño de Arquitectura a Alto Nivel para ATS-LTI
 
 ### Evaluación de opciones de arquitectura
 
@@ -315,11 +315,11 @@ Este modelo de datos se enfoca en la primera versión de LTI, permitiendo una im
 3. **Arquitectura Hexagonal Modular (Ports and Adapters)**
    - Ventajas: separa el dominio central de las dependencias externas, facilita pruebas y evolución.
    - Riesgos: requiere disciplina en diseño, pero mantiene simplicidad si se aplica con pragmatismo.
-   - Adecuación: la mejor opción para LTI-XVB, porque equilibra una implementación clara y una evolución futura segura.
+   - Adecuación: la mejor opción para ATS-LTI, porque equilibra una implementación clara y una evolución futura segura.
 
 ### Propuesta seleccionada
 
-Para el lanzamiento inicial de LTI-XVB se propone una **arquitectura hexagonal modular** implementada como un monolito bien delimitado. Esta opción permite comenzar con una base simple y ordenada, mientras se protege el dominio del negocio de cambios en las infraestructuras externas. Evita la sobreingeniería de microservicios y, a su vez, no limita la escalabilidad futura porque los adaptadores externos pueden evolucionar de forma independiente.
+Para el lanzamiento inicial de ATS-LTI se propone una **arquitectura hexagonal modular** implementada como un monolito bien delimitado. Esta opción permite comenzar con una base simple y ordenada, mientras se protege el dominio del negocio de cambios en las infraestructuras externas. Evita la sobreingeniería de microservicios y, a su vez, no limita la escalabilidad futura porque los adaptadores externos pueden evolucionar de forma independiente.
 
 ### Diseño de alto nivel con Arquitectura Hexagonal
 
