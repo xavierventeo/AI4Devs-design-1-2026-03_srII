@@ -103,3 +103,23 @@ Generar el modelo de dato de las principales entidades para el sistema ATS LTI
 
 ## Resultado
 Genera el resultado al final del documento LTI-XVB.md 
+
+# Prompt 4: Diseño del sistema a alto nivel, tanto explicado como diagrama adjunto
+
+## Rol
+Actúa como un Arquitecto de sofware experto con amplia experienca que colaboras para diseñar la primera versión de un **ATS (Applicant Tracking System)** llamado **LTI** para una startup. 
+
+## Contexto
+Toma como base el documento #file:LTI-XVB.md para entender el modelo de negocio y casos de uso principales del sistema ATS-LTI
+
+## Objetivo
+Generar el modelo de dato de las principales entidades para el sistema ATS LTI
+
+## Instrucciones
+- Genera un diagrama con las diferentes entidades con los atributos esenciales (nombre y tipo) y las relaciones entre entidaddes en formato **Mermaid**
+- Describe las diferentes entidades que has generado en el diagrama en formato
+- Describe qué otras entidades del modelo de datos son importantes en el sistema ATS-LTI
+
+## Resultado
+Genera el resultado al final del documento LTI-XVB.md 
+

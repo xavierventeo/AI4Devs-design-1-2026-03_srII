@@ -297,3 +297,119 @@ erDiagram
 - **USER**: Si se requiere un modelo de autenticación más general, agrupa reclutadores, hiring managers y otros perfiles con permisos y credenciales.
 
 Este modelo de datos se enfoca en la primera versión de LTI, permitiendo una implementación inicial robusta y extendible. Las entidades adicionales propuestas son críticas para evolucionar el ATS hacia funcionalidades de entrevistas, evaluaciones y ofertas formales.
+
+## Diseño de Arquitectura a Alto Nivel para LTI-XVB
+
+### Evaluación de opciones de arquitectura
+
+1. **Arquitectura Monolítica Tradicional**
+   - Ventajas: implementación rápida, despliegue sencillo, menor complejidad inicial.
+   - Riesgos: puede generar acoplamientos fuertes y dificultar la escalabilidad futura.
+   - Adecuación: válida para un MVP, pero limitada si se quiere evolucionar con microservicios.
+
+2. **Arquitectura basada en Microservicios**
+   - Ventajas: escalabilidad independiente de componentes, despliegue modular y resiliencia.
+   - Riesgos: alta complejidad operacional, necesidad de infraestructura madura y mayor costo inicial.
+   - Adecuación: excesiva para la primera versión y contraria al objetivo de no sobreingeniería.
+
+3. **Arquitectura Hexagonal Modular (Ports and Adapters)**
+   - Ventajas: separa el dominio central de las dependencias externas, facilita pruebas y evolución.
+   - Riesgos: requiere disciplina en diseño, pero mantiene simplicidad si se aplica con pragmatismo.
+   - Adecuación: la mejor opción para LTI-XVB, porque equilibra una implementación clara y una evolución futura segura.
+
+### Propuesta seleccionada
+
+Para el lanzamiento inicial de LTI-XVB se propone una **arquitectura hexagonal modular** implementada como un monolito bien delimitado. Esta opción permite comenzar con una base simple y ordenada, mientras se protege el dominio del negocio de cambios en las infraestructuras externas. Evita la sobreingeniería de microservicios y, a su vez, no limita la escalabilidad futura porque los adaptadores externos pueden evolucionar de forma independiente.
+
+### Diseño de alto nivel con Arquitectura Hexagonal
+
+El sistema se organiza en capas:
+
+- **Dominio**: contiene las entidades principales (`Candidate`, `JobPost`, `Application`, `Recruiter`, `PublicationChannel`, `JobPublication`) y las reglas de negocio. Aquí se definen los casos de uso, las validaciones y las políticas de negocio.
+- **Aplicación**: orquesta los casos de uso, gestiona transacciones y expone puertos internos para interactuar con el dominio.
+- **Adaptadores de entrada**: interfaces que permiten recibir solicitudes externas, como una API REST, un panel web para reclutadores y procesos batch de importación de datos.
+- **Adaptadores de salida**: interfaces que conectan el dominio con infraestructuras externas, como la base de datos, el servicio de notificaciones, las APIs de publicación en portales y el motor de parsing de currículos.
+- **Infraestructura**: implementa los adaptadores de salida y las utilidades transversales (persistencia, mensajería, logging, autenticación).
+
+### Detalle del diseño
+
+- El **core del dominio** debe ser independiente de cualquier tecnología específica. Las entidades y casos de uso solo dependen de interfaces (puertos). Esto facilita testes unitarios y cambios en la infraestructura sin afectar la lógica central.
+- Los **casos de uso** principales se modelan como servicios de aplicación: `CreateJobPost`, `PublishJobPost`, `ReceiveApplication`. Cada servicio recibe datos desde un adaptador de entrada y usa puertos de salida para persistencia y comunicación externa.
+- El **adaptador REST** expone los endpoints necesarios para el panel de administración y el consumo de APIs internas. Para la primera versión, un único servicio HTTP es suficiente.
+- La **persistencia** se maneja mediante un adaptador de salida hacia una base de datos relacional o document store. El diseño permite cambiar la implementación sin alterar el dominio.
+- Las **integraciones externas** se abstraen tras puertos como `JobPublicationGateway` y `ResumeParsingGateway`, de modo que el dominio no conoce detalles de APIs de LinkedIn, Indeed u otros servicios.
+- El **módulo de notificaciones** se implementa como adaptador de salida, con capacidad de enviar emails, notificaciones internas o eventos a un bus ligero.
+- La **infraestructura** debe contener un componente de configuración y un runner de la aplicación que ensambla los adaptadores y expone los puertos.
+
+### Ventajas concretas de la implementación
+
+- Facilita el desarrollo iterativo del MVP.
+- Permite añadir nuevas integraciones sin modificar la lógica de negocio.
+- Proporciona una base sólida para escalar por módulos cuando la carga lo requiera.
+- Reduce el riesgo de que cambios en el frontend o en los proveedores de publicación afecten el núcleo del ATS.
+
+### Diagrama del diseño del sistema
+
+```mermaid
+flowchart TB
+    subgraph Domain [Dominio]
+        direction TB
+        DU[Use Cases]
+        DE[Entities & Business Rules]
+    end
+
+    subgraph Application [Aplicación]
+        direction TB
+        A1[CreateJobPost Service]
+        A2[PublishJobPost Service]
+        A3[ReceiveApplication Service]
+    end
+
+    subgraph AdaptersInput [Adaptadores de Entrada]
+        direction TB
+        API[API REST / UI Web]
+        Scheduler[Batch / Scheduler]
+    end
+
+    subgraph AdaptersOutput [Adaptadores de Salida]
+        direction TB
+        DB[Database Adapter]
+        Notif[Notification Adapter]
+        PubAPI[Publication Channel Adapter]
+        Parsing[Resume Parsing Adapter]
+    end
+
+    subgraph Infrastructure [Infraestructura]
+        direction TB
+        Config[Configuration]
+        Logger[Logging]
+        Auth[Authentication]
+    end
+
+    API --> A1
+    API --> A2
+    API --> A3
+    Scheduler --> A3
+    A1 --> DU
+    A2 --> DU
+    A3 --> DU
+    DU --> DE
+    DU --> DB
+    DU --> Notif
+    DU --> PubAPI
+    DU --> Parsing
+    DB --> Infrastructure
+    Notif --> Infrastructure
+    PubAPI --> Infrastructure
+    Parsing --> Infrastructure
+    Config --> API
+    Config --> A1
+    Config --> A2
+    Config --> A3
+    Logger --> API
+    Logger --> DU
+    Logger --> DB
+    Auth --> API
+```
+
+Este diseño balancea una primera ejecución rápida con la capacidad de crecer de forma ordenada. La arquitectura hexagonal asegura que el dominio de LTI permanezca limpio y adaptable, permitiendo a la startup iterar sobre funcionalidades sin comprometer la flexibilidad técnica.
