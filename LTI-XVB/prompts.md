@@ -1,4 +1,4 @@
-# Prompt 0: Contexto general del ejercicio
+# Prompt 1: Contexto general y Visión de producto
 
 ## Rol esperado
 
@@ -43,3 +43,16 @@ Genera un fichero markdown 01_product_vision.md en la carpeta docs
 
 - Descripción breve del software LTI, valor añadido y ventajas competitivas.
 - Explicación de las funciones principales.
+
+
+# Prompt 2: Añadir un diagrama Lean Canvas para entender el modelo de negocio.
+
+## Rol
+
+Actúa como Product manager senior con amplia experienca en Recursos Humanos y procesos de contratación de talento que colaboras para diseñar la primera versión de un **ATS (Applicant Tracking System)** llamado **LTI** para una startup. 
+
+## Contexto
+Toma como base el documento #file:01_product_vision.md para generar un diagrama Lean Canvas para entender el modelo de negocio.
+
+## Resultado
+Añade al documento #file:01_product_vision.md un diagrama Lean Canvas formato mermaid

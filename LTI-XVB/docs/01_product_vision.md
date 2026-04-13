@@ -58,3 +58,23 @@ flowchart TD
 ```
 
 Este diagrama justifica la estructura secuencial del sistema, asegurando un flujo lógico que minimiza cuellos de botella y maximiza la colaboración. La inclusión de decisiones automatizadas (como rechazos) y asistencia de IA refleja el enfoque en eficiencia y competitividad.
+
+## Lean Canvas del Modelo de Negocio
+
+Para comprender y validar el modelo de negocio de LTI, se presenta un Lean Canvas adaptado al contexto de una startup en el sector de Recursos Humanos. Este diagrama resume los elementos clave del negocio, incluyendo problemas, soluciones, métricas y fuentes de ingresos, basándose en el análisis de mercado y las funcionalidades definidas. Las decisiones se justifican por la necesidad de un enfoque lean que priorice la viabilidad financiera y la escalabilidad para startups, evitando inversiones excesivas en características no esenciales.
+
+```mermaid
+block-beta
+    columns 3
+    P["Problema\n- Procesos de reclutamiento manuales e ineficientes en startups\n- Falta de colaboración en tiempo real entre reclutadores y gerentes\n- Dificultad para integrar automatizaciones y IA en HR\n- Alto costo y tiempo en contratación"]
+    S["Solución\n- LTI ATS con automatización completa del ciclo de reclutamiento\n- Colaboración en tiempo real y asistencia de IA\n- Funcionalidades modulares para startups"]
+    KM["Métricas Clave\n- Tiempo de contratación reducido (objetivo: <30 días)\n- Costo por contratación (objetivo: <20% del salario anual)\n- Tasa de adopción de usuarios (objetivo: >80%)\n- Calidad de contratación (evaluada por retención)"]
+    UVP["Propuesta de Valor Única\n- ATS asequible y escalable para startups con IA integrada\n- Enfoque en eficiencia y equidad en selección"]
+    UA["Ventaja Injusta\n- Algoritmos de IA propietarios para análisis de candidatos\n- Posicionamiento temprano en el mercado de ATS para startups"]
+    CH["Canales\n- Ventas directas a través de sitio web y demos\n- Marketing en redes sociales y LinkedIn\n- Asociaciones con plataformas de HR y aceleradoras de startups"]
+    CS["Segmentos de Clientes\n- Startups tecnológicas emergentes\n- Departamentos de HR en empresas pequeñas (<100 empleados)\n- Reclutadores y gerentes de contratación independientes"]
+    CoS["Estructura de Costos\n- Desarrollo y mantenimiento de software (40%)\n- Infraestructura en la nube y hosting (30%)\n- Entrenamiento de modelos de IA (20%)\n- Marketing y ventas (10%)"]
+    RS["Flujos de Ingresos\n- Suscripciones mensuales/anuales por usuario o empresa\n- Funcionalidades premium (e.g., integraciones avanzadas)\n- Servicios de consultoría para onboarding"]
+```
+
+Este Lean Canvas se justifica por su alineación con el marco de Lean Startup, permitiendo iteraciones rápidas basadas en métricas reales. Los segmentos de clientes se enfocan en startups para maximizar el retorno de inversión inicial, mientras que los flujos de ingresos priorizan modelos SaaS recurrentes para sostenibilidad financiera.
