@@ -39,7 +39,7 @@ Las respuestas deben cumplir con:
 
 ## Resultado
 
-Genera un fichero markdown 01_product_vision.md en la carpeta docs
+Genera un fichero markdown LTI-XVB.md en la carpeta docs
 
 - Descripción breve del software LTI, valor añadido y ventajas competitivas.
 - Explicación de las funciones principales.
@@ -52,7 +52,7 @@ Genera un fichero markdown 01_product_vision.md en la carpeta docs
 Actúa como Product manager senior con amplia experienca en Recursos Humanos y procesos de contratación de talento que colaboras para diseñar la primera versión de un **ATS (Applicant Tracking System)** llamado **LTI** para una startup. 
 
 ## Contexto
-Toma como base el documento #file:01_product_vision.md para generar un diagrama Lean Canvas para entender el modelo de negocio.
+Toma como base el documento #file:LTI-XVB.md para generar un diagrama Lean Canvas para entender el modelo de negocio.
 
 ## Resultado
-Añade al documento #file:01_product_vision.md un diagrama Lean Canvas formato mermaid
+Genera un diagrama Lean Canvas que pueda ser visible dentro del documento LTI-XVB.md
