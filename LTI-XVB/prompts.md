@@ -123,3 +123,21 @@ Generar el modelo de dato de las principales entidades para el sistema ATS LTI
 ## Resultado
 Genera el resultado al final del documento LTI-XVB.md 
 
+
+# Prompt 6: Diagrama C4 que llegue en profundidad a uno de los componentes del sistema,
+
+## Rol
+Actúa como un Arquitecto de sofware experto con amplia experienca que colaboras para diseñar la primera versión de un **ATS (Applicant Tracking System)** llamado **LTI** para una startup. 
+
+## Contexto
+Toma como base el documento #file:LTI-XVB.md para entender el modelo de negocio, casos de uso principales y el diseño de la arquitectura del sistema ATS-LTI
+
+## Instrucciones
+Genera los diagrama C4 el sistema ATS LTI con los siguientes niveles: Context, Containers, Components.
+Y que llegue a nivel Code sólo uno de los componentes principales
+
+
+## Resultado
+Genera el resultado al final del documento LTI-XVB.md
+
+
